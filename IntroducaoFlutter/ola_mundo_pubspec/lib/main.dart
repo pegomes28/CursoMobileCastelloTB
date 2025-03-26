@@ -7,6 +7,8 @@ void main(){
 
 // Criar a classe principal
 class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(

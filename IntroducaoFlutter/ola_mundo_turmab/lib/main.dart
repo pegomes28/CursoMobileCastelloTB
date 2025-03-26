@@ -5,12 +5,14 @@ void main(){ //rodar a aplicação
 }
 
 class Myapp extends StatelessWidget{
+  const Myapp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Meu Primeiro AppR"),
+          title: Text("Meu Primeiro App"),
         ),
         body: Center(
           child: Text("Olá Mundo!!!"),
