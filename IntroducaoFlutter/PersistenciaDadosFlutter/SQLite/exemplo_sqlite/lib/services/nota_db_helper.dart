@@ -52,11 +52,18 @@ class NotaDbHelper {
     return maps.map((e) => Nota.fromMap(e)).toList();
   }
 
-  // Update
+  //update
   Future<int> updateNota(Nota nota) async {
     if (nota.id == null) {
       throw Exception();
     }
+    final db = await database;
+    return await db.update(
+      TABLE_NAME,
+      nota.toMap(),
+      where: "id = ?",
+      whereArgs: [nota.id],
+    );
   }
 
   //deleteBD
