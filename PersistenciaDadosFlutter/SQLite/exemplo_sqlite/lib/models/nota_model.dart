@@ -1,6 +1,6 @@
 class Nota {
   // Atributos = Colunas BD
-  final int? id;
+  final int? id; //Pode ser nulo
   final String titulo;
   final String conteudo;
 

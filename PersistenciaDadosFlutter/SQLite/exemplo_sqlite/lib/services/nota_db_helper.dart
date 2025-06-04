@@ -65,6 +65,15 @@ class NotaDbHelper {
       whereArgs: [nota.id],
     );
   }
+    //delete
+  Future<int> deleteNota(int id) async{
+    final db = await database;
+    return await db.delete(
+      TABLE_NAME,
+      where: "id=?",
+      whereArgs: [id]
+    );
+  }
 
-  //deleteBD
+
 }
