@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class Consulta{
   final int? id; //pode ser nulo
-  final int petId; //chave estrangeita
+  final int petId; //chave estrangeira
   final DateTime dataHora;
   final String tipoServico;
   final String observacao;
