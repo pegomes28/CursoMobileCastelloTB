@@ -4,6 +4,8 @@ import 'package:sas_cfp/models/categorias_model.dart';
 import 'package:sas_cfp/views/home_screen.dart';
 
 class CriarCategoriaScreen extends StatefulWidget {
+  const CriarCategoriaScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

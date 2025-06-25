@@ -5,7 +5,6 @@ import 'package:path/path.dart';
 import 'package:sas_cfp/models/transacao_models.dart';
 import 'package:sas_cfp/models/categorias_model.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 class DbHelper {
   static Database? _database; // obj para criar as conexões com o BD
@@ -18,13 +17,8 @@ class DbHelper {
 
   // Fazer as Conexões com o BD
   Future<Database> get database async {
-    if (database != null) {
-      return _database!;
-    } else {
-      _database = await _initDataBase();
-      return _database!;
+    return _database!;
     }
-  }
 
   Future<Database> _initDataBase() async {
     // Pegar o enderço do Banco de Dados

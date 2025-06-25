@@ -3,8 +3,9 @@ import 'package:intl/intl.dart';
 class Transacao {
   final int? id;
   final int categoriaId;
-  final String valor;
+  final double valor;
   final DateTime dataHora;
+  final String tipo;
   final String descricao;
 
   Transacao({
@@ -13,6 +14,7 @@ class Transacao {
     required this.valor,
     required this.dataHora,
     required this.descricao,
+    required this.tipo,
   });
 
   // toMap : Obj => BD
@@ -22,15 +24,16 @@ class Transacao {
     "valor": valor,
     "dataHora": dataHora.toIso8601String(),
     "descricao": descricao,
+    "tipo": tipo,
   };
 
   // FromMap() : BD => Obj
   factory Transacao.fromMap(Map<String, dynamic> map) => Transacao(
     id: map["id"] as int,
     categoriaId: map["categoriaId"] as int,
-    valor: map["valor"] as String,
+    valor: map["valor"] as double,
     dataHora: DateTime.parse(map["dataHora"] as String),
-    descricao: map["descricao"] as String,
+    descricao: map["descricao"] as String, tipo: '',
   );
 
   // Método de conversão de Data e Hora para formato BR

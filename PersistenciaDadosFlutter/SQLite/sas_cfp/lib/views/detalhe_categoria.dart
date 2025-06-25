@@ -2,36 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:sas_cfp/controllers/categorias_controller.dart';
 import 'package:sas_cfp/controllers/transacao_controller.dart';
 import 'package:sas_cfp/models/categorias_model.dart';
-import 'package:sas_cfp/models/transacao_models.dart';
-import 'package:sas_cfp/views/criar_categoria.dart';
 
 class DetalheCategoriaScreen extends StatefulWidget {
   final int categoriaId;
 
-  DetalheCategoriaScreen({
+  const DetalheCategoriaScreen({
     super.key,
     required this.categoriaId,
-  }); // Pega o Id pet
+  });
 
   @override
-  State<StatefulWidget> createState() {
-    return _DetalheCategoriaScreenState();
-  }
+  State<StatefulWidget> createState() => _DetalheCategoriaScreenState();
 }
 
 class _DetalheCategoriaScreenState extends State<DetalheCategoriaScreen> {
   final _categoriasControl = CategoriasController();
-  final _transacaoControl = TransacaoController();
 
-  Categorias? _categorias;
-
-  List<Categorias> _categoria = [];
-
+  Categorias? _categoria;
   bool _isLoading = true;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _carregarDados();
   }
@@ -39,10 +30,40 @@ class _DetalheCategoriaScreenState extends State<DetalheCategoriaScreen> {
   void _carregarDados() async {
     setState(() {
       _isLoading = true;
-      _categoria = [];
     });
+
     try {
-      _categoria = await _categoriasControl.readCategoriasbyId(widget.petId)
+      _categoria = await _categoriasControl.readCategoriaById(widget.categoriaId);
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("Erro ao carregar categoria: $e");
+      setState(() {
+        _isLoading = false;
+      });
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Detalhes da Categoria")),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _categoria == null
+              ? const Center(child: Text("Categoria não encontrada"))
+              : Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Nome: ${_categoria!.nome}", style: const TextStyle(fontSize: 20)),
+                      const SizedBox(height: 10),
+                      Text("Transações: ${_categoria!.transacoes.length}"),
+                    ],
+                  ),
+                ),
+    );
   }
 }

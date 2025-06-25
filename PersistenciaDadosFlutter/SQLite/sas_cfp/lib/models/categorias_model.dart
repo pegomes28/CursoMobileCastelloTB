@@ -20,4 +20,6 @@ class Categorias {
       nome: map["nome"] as String
     );
   }
+
+  get transacoes => null;
 }

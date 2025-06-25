@@ -16,4 +16,6 @@ class CategoriasController {
   Future<int> deleteCategorias(int id) async {
     return await _dbHelper.deleteCategorias(id);
   }
+
+  Future readCategoriaById(int categoriaId) async {}
 }
