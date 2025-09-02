@@ -9,6 +9,11 @@
             "id": 2,
             "nome": "Giovana Fulanetti",
             "email":"gigidograu@outlook.com"
+        },
+        {
+            "id": 3,
+            "nome": "Diogo Takamori Barbosa",
+            "email":"diditakamori@outlook.com"
         }
     ],
     "livros": [

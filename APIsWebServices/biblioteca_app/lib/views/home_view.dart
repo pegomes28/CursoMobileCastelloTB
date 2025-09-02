@@ -2,7 +2,6 @@ import 'package:biblioteca_app/views/emprestimos/emprestimo_list_view.dart';
 import 'package:biblioteca_app/views/livros/livros_list_view.dart';
 import 'package:biblioteca_app/views/usuarios/usuarios_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,7 +16,7 @@ class _HomeViewState extends State<HomeView> {
   final List<Widget> _paginas = [
     const LivrosListView(),
     const EmprestimoListView(),
-    const UsuariosListView(),
+    const UsuarioListView(),
   ];
 
   @override

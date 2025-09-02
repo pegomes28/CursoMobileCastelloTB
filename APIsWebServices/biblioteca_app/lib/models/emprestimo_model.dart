@@ -40,7 +40,7 @@ class EmprestimoModel {
     livroId: json["livroId"].toString(), 
     dataEmprestimo: json["dataEmprestimo"].toString(), 
     dataDevolucao: json["dataDevolucao"].toString(), 
-    devolvido: json["devolvido"]
+    devolvido: json["disponivel"] == true ? true : false,
   
   );
 
