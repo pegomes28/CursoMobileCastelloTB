@@ -77,4 +77,13 @@ class FavoriteMovieController {
     await _db.collection("users").doc(currentUser!.uid).collection("favorite_movies")
     .doc(movieId.toString()).update({"rating":rating});
   }
+
+  // Métodos alternativos para compatibilidade
+  void updateRating(int id, double newRating) {
+    updateMovieRating(id, newRating);
+  }
+
+  void removeFavorite(int id) {
+    removeFavoriteMovie(id);
+  }
 }

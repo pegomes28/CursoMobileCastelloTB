@@ -7,6 +7,7 @@ import 'package:cine_favorite/models/favorite_movie.dart';
 import 'package:cine_favorite/views/search_movie_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class FavoriteView extends StatefulWidget {
   const FavoriteView({super.key});
@@ -22,7 +23,7 @@ class _FavoriteViewState extends State<FavoriteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Meu Filmes Favoritos"),
+        title: Text("Meus Filmes Favoritos"),
         actions: [
           IconButton(
             onPressed: FirebaseAuth.instance.signOut,
@@ -30,61 +31,132 @@ class _FavoriteViewState extends State<FavoriteView> {
           ),
         ],
       ),
-      //a construção da Tela vai depender do conteudo da lista de favoritos
       body: StreamBuilder<List<FavoriteMovie>>(
-        //buscar a lista de favoritos no firebasfirestore
         stream: _favMovieController.getFavoriteMovies(),
         builder: (context, snapshot) {
-          // se deu erro ao carregar a lista
           if (snapshot.hasError) {
             return Center(child: Text("Erro ao Carregar a Lista de Favoritos"));
           }
-          // enquanto está conectando com o firestore
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          // quando a lista está vazia
           if (snapshot.data!.isEmpty) {
             return Center(child: Text("Nenhum Filme Adicionado aos Favoritos"));
           }
+
           final favoriteMovies = snapshot.data!;
-          return Expanded(
-            //constainer que permite o scroll da tela
-            child: GridView.builder(
-              padding: EdgeInsets.all(
-                8,
-              ), //espaçamento do grid em relação a borda da tela de 8px
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8, //espaçametno vertical
-                mainAxisSpacing: 8,
-                childAspectRatio: 0.7, //espaçamento horizontal
-              ),
-              itemCount: favoriteMovies.length,
-              itemBuilder: (context, index) {
-                // criar um obj de favMovie
-                final movie = favoriteMovies[index];
-                return Card(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        
-                        child: Image.file(File(movie.posterPath), fit: BoxFit.cover,)),
-                        Center(child: Text(movie.title),),
-                        
-                        Center(child: Text("Nota do Filme: ${movie.rating}"),)
-                       
-                    ],
-                  ),
-                );
-              },
+
+          return GridView.builder(
+            padding: EdgeInsets.all(8),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 0.7,
             ),
+            itemCount: favoriteMovies.length,
+            itemBuilder: (context, index) {
+              final movie = favoriteMovies[index];
+              return Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onLongPress: () {
+                          _favMovieController.removeFavorite(movie.id);
+                        },
+                        child: Image.file(
+                          File(movie.posterPath),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+
+                    Center(
+                      child: Text(
+                        movie.title,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: () async {
+                        double newRating = movie.rating.toDouble();
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("Alterar nota"),
+                              content: StatefulBuilder(
+                                builder: (context, setState) {
+                                  return Slider(
+                                    value: newRating,
+                                    min: 0,
+                                    max: 10,
+                                    divisions: 10,
+                                    label: newRating.toString(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        newRating = value;
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Cancelar"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    _favMovieController.updateRating(
+                                        movie.id, newRating);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Salvar"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Center(
+                        child: Text("Nota do Filme: ${movie.rating}"),
+                      ),
+                    ),
+                    Center(
+                      child: RatingBar.builder(
+                        initialRating: movie.rating.toDouble(),
+                        minRating: 0,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 24,
+                        itemBuilder: (context, _) =>
+                            Icon(Icons.star, color: Colors.amber),
+                        onRatingUpdate: (rating) {
+                          _favMovieController.updateRating(movie.id, rating);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchMovieView())),
-      child: Icon(Icons.search),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SearchMovieView()),
+        ),
+        child: Icon(Icons.search),
+      ),
     );
   }
 }
