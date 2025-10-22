@@ -54,20 +54,13 @@ Para rodar o projeto localmente, você precisará ter instalado:
 
 ### Configuração do Ambiente
 
-1.  **Clone o Repositório:**
-
-    ```bash
-    git clone [LINK_DO_SEU_REPOSITORIO]
-    cd [NOME_DA_PASTA_DO_PROJETO]
-    ```
-
-2.  **Instale as Dependências:**
+1.  **Instale as Dependências:**
 
     ```bash
     flutter pub get
     ```
 
-3.  **Configuração do Firebase:**
+2.  **Configuração do Firebase:**
 
       * Crie um projeto no Console do Firebase.
       * Habilite **Authentication** (Email/Password).
@@ -77,11 +70,11 @@ Para rodar o projeto localmente, você precisará ter instalado:
           * **Android:** Cole o arquivo `google-services.json` na pasta `android/app/`.
           * **iOS:** Siga as instruções para adicionar o `GoogleService-Info.plist`.
 
-4.  **Configuração de Geolocalização:**
+3.  **Configuração de Geolocalização:**
 
       * Garanta que as permissões de localização estejam configuradas nos arquivos manifestos (Android: `AndroidManifest.xml`, iOS: `Info.plist`).
 
-5.  **Execução:**
+4.  **Execução:**
 
     ```bash
     flutter run
